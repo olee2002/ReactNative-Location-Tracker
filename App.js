@@ -9,14 +9,15 @@ import { Ionicons } from '@expo/vector-icons';
 
 import AppNavigator from './navigation/AppNavigator';
 
-// if (!TaskManager.isTaskDefined('PORTER_LOCATION_TRACK')) 
+
 TaskManager.defineTask(
-   'PORTER_LOCATION_TRACK',
+   'LOCATION_TRACKER',
    async ({ data: { locations }, error }) => {
+      console.log('here--')
       if (error) {
          // check `error.message` for more details.
          return console.log(
-            'PORTER_LOCATION_TRACK err msg',
+            'LOCATION_TRACKER err msg',
             error.messages
          )
       }
@@ -30,6 +31,7 @@ TaskManager.defineTask(
       }
    }
 )
+
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);

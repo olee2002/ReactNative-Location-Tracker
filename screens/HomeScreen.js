@@ -10,25 +10,44 @@ import {
   View,
   AsyncStorage
 } from 'react-native';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 
 import { MonoText } from '../components/StyledText';
 
 export default function HomeScreen() {
 
-   const [locations, setLocations] = useState({lat:'', lng:''})
-   getLocation = async ()=>{
-      const lat = await AsyncStorage.getItem('lat')
-      const lng= await AsyncStorage.getItem('lng')
-      setLocations({lat, lng})
+   const [locations, setLocations] = useState({})
+
+ const onPress = async () => {
+    console.log('clicked')
+    await _getLocationAsync();
+   await Location.startLocationUpdatesAsync('LOCATION_TRACKER', {
+     accuracy: Location.Accuracy.Balanced,
+   });
+ };
+
+ const _getLocationAsync = async () => {
+   let { status } = await Permissions.askAsync(Permissions.LOCATION);
+   if (status !== 'granted') {
+   //   this.setState({
+   //     errorMessage: 'Permission to access location was denied',
+   //   });
    }
-   // getLocation()
-//   console.log('here1', locations)
+
+   let location = await Location.getCurrentPositionAsync({});
+   setLocations({ locations: location ? location.coords : {} });
+ };
+
+
+
   return (
     <View style={styles.container}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>
         <View style={styles.welcomeContainer}>
+        <TouchableOpacity onPress={onPress} style={styles.helpLink}>
           <Image
             source={
               __DEV__
@@ -37,6 +56,7 @@ export default function HomeScreen() {
             }
             style={styles.welcomeImage}
           />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.getStartedContainer}>
@@ -46,7 +66,9 @@ export default function HomeScreen() {
 
           <View
             style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-            <MonoText>Your Current Location is {locations.lat}{locations.lng}</MonoText>
+            <MonoText>Click the icon above to fetch your Current Location is {' '}
+            {locations && locations.locations ? locations.locations.latitude: ''}{' '}
+            {locations && locations.locations ? locations.locations.longitude:''}</MonoText>
           </View>
 
           {/* <Text style={styles.getStartedText}>
