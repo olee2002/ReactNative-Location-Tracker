@@ -1,0 +1,86 @@
+import { AppLoading } from 'expo';
+import { Asset } from 'expo-asset';
+import * as Font from 'expo-font';
+import * as TaskManager from 'expo-task-manager';
+
+import React, { useState } from 'react';
+import { Platform, StatusBar, StyleSheet, View, AsyncStorage } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
+import AppNavigator from './navigation/AppNavigator';
+
+// if (!TaskManager.isTaskDefined('PORTER_LOCATION_TRACK')) 
+TaskManager.defineTask(
+   'PORTER_LOCATION_TRACK',
+   async ({ data: { locations }, error }) => {
+      if (error) {
+         // check `error.message` for more details.
+         return console.log(
+            'PORTER_LOCATION_TRACK err msg',
+            error.messages
+         )
+      }
+      console.log('this locations TaskManager', locations)
+      if (locations) {
+         const lat = locations[0].coords.latitude
+         const lng = locations[0].coords.longitude
+         console.log('location', lat, lng)
+         await AsyncStorage.setItem('lat', lat.toString())
+         await AsyncStorage.setItem('lng', lng.toString())
+      }
+   }
+)
+
+export default function App(props) {
+  const [isLoadingComplete, setLoadingComplete] = useState(false);
+
+  if (!isLoadingComplete && !props.skipLoadingScreen) {
+    return (
+      <AppLoading
+        startAsync={loadResourcesAsync}
+        onError={handleLoadingError}
+        onFinish={() => handleFinishLoading(setLoadingComplete)}
+      />
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <AppNavigator />
+      </View>
+    );
+  }
+}
+
+async function loadResourcesAsync() {
+  await Promise.all([
+    Asset.loadAsync([
+      require('./assets/images/robot-dev.png'),
+      require('./assets/images/robot-prod.png'),
+    ]),
+    Font.loadAsync({
+      // This is the font that we are using for our tab bar
+      ...Ionicons.font,
+      // We include SpaceMono because we use it in HomeScreen.js. Feel free to
+      // remove this if you are not using it in your app
+      'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+    }),
+  ]);
+}
+
+function handleLoadingError(error: Error) {
+  // In this case, you might want to report the error to your error reporting
+  // service, for example Sentry
+  console.warn(error);
+}
+
+function handleFinishLoading(setLoadingComplete) {
+  setLoadingComplete(true);
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+});
