@@ -22,6 +22,7 @@ export default function HomeScreen() {
    const [locations, setLocations] = useState({
          latitude:33.7490, 
          longitude:-84.3880,
+         title:'Atlanta, GA',
          // latitudeDelta:0.0122,
          // longitudeDelta:0.0121
       })
@@ -43,8 +44,9 @@ export default function HomeScreen() {
    }
 
    let locations = await Location.getCurrentPositionAsync({});
-   // locations.coords.latitudeDelta = 0.00522;
-   // locations.coords.longitudeDelta = 0.00521;
+   locations.coords.latitudeDelta = 0.00522;
+   locations.coords.longitudeDelta = 0.00521;
+   locations.coords.title='Sanfrancisco,CA'
    setLocations(locations.coords);
  };
 
@@ -78,7 +80,7 @@ export default function HomeScreen() {
         region={locations}
       //   onRegionChange={this.onRegionChange}
         >
-            <Marker coordinate={locations}>
+            <Marker coordinate={locations} title={locations.title}>
                <Image 
                style={{ width:10, height:15 }}
                source={require('../assets/images/marker.png')}/>
