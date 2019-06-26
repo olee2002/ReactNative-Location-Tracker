@@ -19,7 +19,12 @@ import { MonoText } from '../components/StyledText';
 
 export default function HomeScreen() {
 
-   const [locations, setLocations] = useState({})
+   const [locations, setLocations] = useState({
+         latitude:33.7490, 
+         longitude:-84.3880,
+         // latitudeDelta:0.0122,
+         // longitudeDelta:0.0121
+      })
 
  const onPress = async () => {
     console.log('clicked')
@@ -38,6 +43,8 @@ export default function HomeScreen() {
    }
 
    let locations = await Location.getCurrentPositionAsync({});
+   // locations.coords.latitudeDelta = 0.00522;
+   // locations.coords.longitudeDelta = 0.00521;
    setLocations(locations.coords);
  };
 
@@ -60,25 +67,21 @@ export default function HomeScreen() {
         <View style={styles.getStartedContainer}>
           <View
             style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-            <MonoText>Click the icon above to fetch your current Location : {' '}
-            {locations ? locations.latitude: 'Lat'}{' '}
+            <MonoText>Click the icon to fetch your current Location : {' '}</MonoText>
+            <MonoText>{locations ? locations.latitude: 'Lat'}{' '}
             {locations ? locations.longitude:'Lng'}</MonoText>
           </View>
         </View>
         <MapView 
         style={{  width: '100%', height:400 }}
-        initialRegion={{
-         latitude: 37.78825,
-         longitude: -122.4324,
-         latitudeDelta: 0.0122,
-         longitudeDelta: 0.0121,
-       }}
+        initialRegion={locations}
+        region={locations}
+      //   onRegionChange={this.onRegionChange}
         >
             <Marker coordinate={locations}>
                <Image 
                style={{ width:10, height:15 }}
-               source={require('../assets/images/marker.png')}/
-               >
+               source={require('../assets/images/marker.png')}/>
             </Marker>
          </MapView>
 
