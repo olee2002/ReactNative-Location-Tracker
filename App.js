@@ -25,7 +25,7 @@ TaskManager.defineTask(
       if (locations) {
          const lat = locations[0].coords.latitude
          const lng = locations[0].coords.longitude
-         console.log('location', lat, lng)
+         // console.log('location', lat, lng)
          await AsyncStorage.setItem('lat', lat.toString())
          await AsyncStorage.setItem('lng', lng.toString())
       }

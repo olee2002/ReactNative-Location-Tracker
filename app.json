@@ -9,6 +9,19 @@
       "android",
       "web"
     ],
+    "android": {
+      "package": "com.location.tracker01",
+      "versionCode": 1,
+      "permissions": [
+         "READ_EXTERNAL_STORAGE",
+         "WRITE_EXTERNAL_STORAGE",
+         "ACCESS_FINE_LOCATION",
+         "ACCESS_COARSE_LOCATION",
+         "com.google.android.c2dm.permission.RECEIVE",
+         "com.android.launcher.permission.INSTALL_SHORTCUT",
+         "com.htc.launcher.permission.UPDATE_SHORTCUT"
+      ]
+   },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -24,13 +37,14 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.location.tracker01",
       "supportsTablet": true,
       "infoPlist": {
-         "UIBackgroundModes": [
-           "location",
-           "fetch"
-         ]
-       }
-    }
+         "UIBackgroundModes": ["location", "fetch"]
+      }
+   }
   }
 }
+
+
+
