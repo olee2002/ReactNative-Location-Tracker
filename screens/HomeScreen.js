@@ -33,6 +33,10 @@ export default function HomeScreen() {
    })
 
    const getLocation = async () => {
+      let { status } = await Permissions.askAsync(Permissions.LOCATION)
+      if (status !== 'granted') {
+         console.log('Permission to access location was denied')
+      }
       await _getLocationAsync()
       await Location.startLocationUpdatesAsync('LOCATION_TRACKER', {
          accuracy: Location.Accuracy.Balanced,
@@ -46,14 +50,11 @@ export default function HomeScreen() {
 
    const onPress = async () => {
       setRoutes([])
+      _getLocationAsync()
    }
 
 
    const _getLocationAsync = async () => {
-      let { status } = await Permissions.askAsync(Permissions.LOCATION)
-      if (status !== 'granted') {
-         console.log('Permission to access location was denied')
-      }
       console.log('location clicked')
       const latitude = await AsyncStorage.getItem('lat')
       const longitude = await AsyncStorage.getItem('lng')
