@@ -110,14 +110,12 @@ export default function HomeScreen() {
                      source={require('../assets/images/marker.png')}
                   />
                </Marker>
-               {/* {console.log('here', routes.map(route=>({latitude:route.latitude, longitude:route.longitude})))} */}
-            {routes.length>0 &&  <Polygon coordinates={routes.map(route=>({latitude:route.latitude, longitude:route.longitude}))
-            // [{ latitude: 37.8025259, longitude: -122.4351431 },
-            // { latitude: 37.7896386, longitude: -122.421646 },
-            // { latitude: 37.7665248, longitude: -122.4161628 },
-            // { latitude: 37.7734153, longitude: -122.4577787 },
-            // { latitude: 37.7948605, longitude: -122.4596065 },
-            // { latitude: 37.8025259, longitude: -122.4351431 }]
+            {routes.length>0 &&  
+            <Polygon coordinates={routes.map(route=>({
+               latitude:route.latitude, 
+               longitude:route.longitude
+            }))
+
         }/>}
             </MapView>
          </ScrollView>
